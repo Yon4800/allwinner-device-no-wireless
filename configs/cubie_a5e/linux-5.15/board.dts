@@ -9,7 +9,7 @@
 
 /{
 	board = "A527", "A527-CUBIE-A5-AXP717C";
-	compatible = "allwinner,a523", "arm,sun55iw3p1";
+	compatible = "radxa,cubie-a5e", "arm,sun55iw3p1";
 	aliases {
 		pmu0 = &pmu0;
 		axp1530 = &axp1530;
@@ -1204,11 +1204,11 @@
 		ctp_name = "gt9xxnew_ts";
 		ctp_twi_id = <0x5>;
 		ctp_twi_addr = <0x14>;
-		ctp_screen_max_x = <0x320>;
-		ctp_screen_max_y = <0x500>;
-		ctp_revert_x_flag = <0x1>;
-		ctp_revert_y_flag = <0x1>;
-		ctp_exchange_x_y_flag = <0x1>;
+		ctp_screen_max_x = <0x500>;
+		ctp_screen_max_y = <0x320>;
+		ctp_revert_x_flag = <0x0>;
+		ctp_revert_y_flag = <0x0>;
+		ctp_exchange_x_y_flag = <0x0>;
 		ctp_int_port = <&pio PJ 20 IRQ_TYPE_LEVEL_HIGH>;
 		ctp_wakeup = <&pio PJ 21 GPIO_ACTIVE_HIGH>;
 		ctp-supply = <&reg_vcc_tp>;
@@ -1639,38 +1639,26 @@
 };
 
 &spi0 {
-	compatible = "allwinner,sunxi-spi-v1.3";
-	device_type = "spi0";
+	clock-frequency = <50000000>;
 	pinctrl-0 = <&spi0_pins_default &spi0_pins_cs>;
 	pinctrl-1 = <&spi0_pins_sleep>;
 	pinctrl-names = "default", "sleep";
-	clock-frequency = <100000000>;
-	sunxi,spi-bus-mode = <0x10>;
-	sunxi,spi-cs-mode = <0x01>;
-	sunxi,spi-num-cs = <1>;
+	sunxi,spi-bus-mode = <SUNXI_SPI_BUS_NOR>;
+	sunxi,spi-cs-mode = <SUNXI_SPI_CS_SOFT>;
+	spi_slave_mode = <0>;
+	spi0_cs_number = <1>;
+	spi0_cs_bitmap = <1>;
 	status = "okay";
 
-	spi_board0 {
+	spi_board@0 {
 		device_type = "spi_board0";
 		compatible = "spi-nor";
+		spi-max-frequency = <50000000>;
 		m25p,fast-read = <1>;
 		reg = <0x0>;
-		spi-max-frequency = <50000000>;
-		spi-tx-bus-width = <1>;
 		spi-rx-bus-width = <1>;
+		spi-tx-bus-width = <1>;
 		status = "okay";
-
-		// partitions {
-		// 	compatible = "fixed-partitions";
-		// 	#address-cells = <1>;
-		// 	#size-cells = <1>;
-
-		// 	partition@0 {
-		// 		label = "uboot";
-		// 		reg = <0x0 0x100000>;
-		// 	};
-		
-		// };
 	};
 };
 
